@@ -5,28 +5,19 @@ from django.utils.translation import gettext_lazy as _
 # Manager personalizzato per gestire la creazione di utenti
 class CustomUserManager(BaseUserManager):
     #password non obbligatoria
-    def create_user(self, email, password=None, **extra_fields):
+    def create_user(self, email, password, **extra_fields):
         """Crea e salva un utente normale."""
-        if not email:
-            raise ValueError(_('L\'email è obbligatoria'))
-
         email = self.normalize_email(email)
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)  # Cripta la password
-        user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password=None, **extra_fields):
+    def create_superuser(self, email, password, **extra_fields):
         """Crea e salva un superuser."""
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
-
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError(_('Superuser deve avere is_staff=True'))
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError(_('Superuser deve avere is_superuser=True'))
 
         return self.create_user(email, password, **extra_fields)
 
@@ -54,12 +45,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False, verbose_name='staff')
     is_superuser = models.BooleanField(default=False, verbose_name='superuser')
 
-    # Impostazioni per il manager personalizzato
+    # Impostazioni per il manager personalizzato: questa riga lo collega
     objects = CustomUserManager()
 
     # Campo usato per il login
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'birth_date']
+    REQUIRED_FIELDS = ['email', 'password']
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.email})"

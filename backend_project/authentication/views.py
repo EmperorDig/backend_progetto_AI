@@ -4,7 +4,7 @@ from rest_framework import status
 from .serializers import UserSerializer
 
 @api_view(['POST'])
-def createUser(request):
+def RegisterUser(request):
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
