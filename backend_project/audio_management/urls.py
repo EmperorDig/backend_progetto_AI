@@ -1,7 +1,7 @@
 from django.urls import path
-from . import views
+from .views import AudioListView, AudioCreateView
 
 urlpatterns = [
-    path('audio/', views.AudioListCreateView, name='audio-list-create'),
-    path('add_audio/', views.AudioCreateView, name='audio-list-create'),
+    path('audiolist/', AudioListView, name='audio-list'),
+    path('audiocreate/', AudioCreateView, name='audio-create'),
 ]
