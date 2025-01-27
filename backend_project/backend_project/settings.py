@@ -118,7 +118,19 @@ AUTH_USER_MODEL = 'authentication.CustomUser'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Rome'
+
+DATE_FORMAT = "d/m/Y"  # Formato giorno/mese/anno (es. 25/12/2023)
+DATETIME_FORMAT = "d/m/Y H:i"  # Es. 25/12/2023 14:30
+TIME_FORMAT = "H:i:s"  # Es. 14:30:15
+
+DATE_INPUT_FORMATS = [
+    '%d/%m/%Y',
+]
+
+DATETIME_INPUT_FORMATS = [
+    '%d/%m/%Y %H:%M:%S',
+]
 
 USE_I18N = True
 

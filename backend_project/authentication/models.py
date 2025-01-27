@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 # Manager personalizzato per gestire la creazione di utenti
 class CustomUserManager(BaseUserManager):
-    #password non obbligatoria
+
     def create_user(self, email, password, **extra_fields):
         """Crea e salva un utente normale."""
         email = self.normalize_email(email)
@@ -12,26 +12,26 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', False)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)  # Cripta la password
+        user.save(using=self._db)  # Salva l'utente nel database
         return user
 
     def create_superuser(self, email, password, **extra_fields):
         """Crea e salva un superuser."""
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-
+        extra_fields['is_superuser'] = True
+        extra_fields['is_staff'] = True
         return self.create_user(email, password, **extra_fields)
 
 
 # Modello personalizzato per l'utente
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     """Modello utente personalizzato"""
-    DISEASE_TYPES = [('tipo1', 'tipo1'),
-                     ('tipo2', 'tipo2'),
-                     ('tipo3', 'tipo3')]
+    DISEASE_TYPES = [('visiva', 'Visiva'),
+                     ('uditiva', 'Uditiva'),
+                     ('tattile', 'Tattile')]
     email = models.EmailField(unique=True, verbose_name='email')
-    first_name = models.CharField(max_length=50, verbose_name='nome')
-    last_name = models.CharField(max_length=50, verbose_name='cognome')
-    birth_date = models.DateField(verbose_name='data di nascita')
+    first_name = models.CharField(max_length=50, verbose_name='nome', blank=True)
+    last_name = models.CharField(max_length=50, verbose_name='cognome', blank=True)
+    birth_date = models.DateField(verbose_name='data di nascita', blank=True, null=True)
     disease_type = models.CharField(
         max_length=20,
         verbose_name='tipo di malattia',
@@ -50,7 +50,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     # Campo usato per il login
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['email', 'password']
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.email})"
