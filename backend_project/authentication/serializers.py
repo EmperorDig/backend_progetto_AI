@@ -5,7 +5,6 @@ import datetime
 import pytz
 import re
 
-
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)  # La password non deve essere letta
     birth_date = serializers.DateField(format="%d/%m/%Y", input_formats=['%d/%m/%Y'])
@@ -21,7 +20,6 @@ class UserSerializer(serializers.ModelSerializer):
         today = timezone.now().astimezone(local_tz).date()
         if not (today >= value >= self.MIN_BIRTH_DATE):
             raise serializers.ValidationError("Inserire data di nascita valida")
-
         return value
 
 
@@ -39,7 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("La password deve contenere almeno un numero")
 
         if not re.search('[!@#$%^&*(),.?":{}|<>]', value):
-            raise serializers.Validationerror("La password deve contenere almeno un carattere speciale")
+            raise serializers.ValidationError("La password deve contenere almeno un carattere speciale")
         return value
 
     def validate_first_name(self, value):
@@ -56,3 +54,9 @@ class UserSerializer(serializers.ModelSerializer):
 
         value = value[0].upper() + value[1:].lower()
         return value
+
+
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+    password = serializers.CharField(write_only=True, required=True)

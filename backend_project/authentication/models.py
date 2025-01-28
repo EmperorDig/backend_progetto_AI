@@ -1,10 +1,8 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
-from django.utils.translation import gettext_lazy as _
 
 # Manager personalizzato per gestire la creazione di utenti
 class CustomUserManager(BaseUserManager):
-
     def create_user(self, email, password, **extra_fields):
         """Crea e salva un utente normale."""
         email = self.normalize_email(email)
@@ -21,10 +19,10 @@ class CustomUserManager(BaseUserManager):
         extra_fields['is_staff'] = True
         return self.create_user(email, password, **extra_fields)
 
+#creare una classe apposta per il superuser?
 
 # Modello personalizzato per l'utente
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    """Modello utente personalizzato"""
     DISEASE_TYPES = [('visiva', 'Visiva'),
                      ('uditiva', 'Uditiva'),
                      ('tattile', 'Tattile')]

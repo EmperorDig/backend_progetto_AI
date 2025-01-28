@@ -44,12 +44,22 @@ INSTALLED_APPS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        #'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-       # 'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticated',
     ),
 }
+
+#SIMPLE_JWT = {
+#   'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+#   'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+#   'ROTATE_REFRESH_TOKENS': True,  # Fa ruotare i token refresh
+#   'BLACKLIST_AFTER_ROTATION': True,  # Rende inutilizzabili i vecchi token
+#   'ALGORITHM': 'HS256',
+#   'SIGNING_KEY': 'your-secret-key',  # Usa una chiave sicura!
+#   'AUTH_HEADER_TYPES': ('Bearer',),
+#}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
