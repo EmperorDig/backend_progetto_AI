@@ -1,7 +1,8 @@
 from django.urls import path
-from .views import AudioListView, AudioCreateView
+from .views import AudioListView, AudioCreateView, GetAudioData
 
 urlpatterns = [
-    path('audiolist/', AudioListView, name='audio-list'),
-    path('audiocreate/', AudioCreateView, name='audio-create'),
+    path('audio-list/', AudioListView, name='audio-list'),
+    path('audio-create/', AudioCreateView, name='audio-create'),
+    path('audio-getdata/<int:audio_id>/', GetAudioData, name='audio-getdata')
 ]
