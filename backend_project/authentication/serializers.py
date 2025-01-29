@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
     MIN_BIRTH_DATE = datetime.date(1900, 1, 1)
 
     class Meta:
-        fields = ['email', 'first_name', 'last_name', 'birth_date', 'password', 'role']
+        fields = ['email', 'first_name', 'last_name', 'birth_date', 'password']
 
     def validate_birth_date(self, value):
         local_tz = pytz.timezone('Europe/Rome')
@@ -52,17 +52,16 @@ class UserSerializer(serializers.ModelSerializer):
         return value
 
 
-
-class PatientUserSerializer(UserSerializer):
-    class Meta(UserSerializer.Meta):
-        model = PatientUser
-        fields = UserSerializer.Meta.fields.append('disease_type')
-
-
 class DoctorUserSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
         model = DoctorUser
         fields = UserSerializer.Meta.fields
+
+
+class PatientUserSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
+        model = PatientUser
+        fields = UserSerializer.Meta.fields + ['disease_type']
 
 
 class LoginSerializer(serializers.Serializer):

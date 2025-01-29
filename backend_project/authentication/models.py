@@ -13,14 +13,21 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)  # Salva l'utente nel database
         return user
 
+    def create_superuser(self, email, password, **extra_fields):
+        extra_fields['is_staff'] = True
+        extra_fields['is_superuser'] = True
+        return self.create_user(email, password, **extra_fields)
+
 
 class BaseUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, verbose_name='email')
-    first_name = models.CharField(max_length=50, verbose_name='nome', blank=True)
-    last_name = models.CharField(max_length=50, verbose_name='cognome', blank=True)
-    birth_date = models.DateField(verbose_name='data di nascita', blank=True, null=True)
+    first_name = models.CharField(max_length=50, verbose_name='nome')
+    last_name = models.CharField(max_length=50, verbose_name='cognome')
+    birth_date = models.DateField(verbose_name='data di nascita')
 
     is_active = models.BooleanField(default=True, verbose_name='attivo')
+    is_staff = models.BooleanField(default=False, verbose_name='staff')
+    is_superuser = models.BooleanField(default=False, verbose_name='admin')
     # Impostazioni per il manager personalizzato: questa riga lo collega
     objects = CustomUserManager()
     # Campo usato per il login
@@ -38,8 +45,6 @@ class PatientUser(BaseUser):
     disease_type = models.CharField(
         max_length=20,
         verbose_name='tipo di malattia',
-        blank=True,
-        null=True,
         choices=DISEASE_TYPES
     )
 
