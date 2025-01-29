@@ -1,4 +1,5 @@
 from django.contrib import admin
-from .models import CustomUser
+from .models import PatientUser, DoctorUser
 
-admin.site.register(CustomUser)
+admin.site.register(PatientUser)
+admin.site.register(DoctorUser)

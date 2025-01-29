@@ -1,6 +1,6 @@
 from django.utils import timezone
 from rest_framework import serializers
-from .models import CustomUser
+from .models import PatientUser, DoctorUser
 import datetime
 import pytz
 import re
@@ -8,12 +8,10 @@ import re
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)  # La password non deve essere letta
     birth_date = serializers.DateField(format="%d/%m/%Y", input_formats=['%d/%m/%Y'])
-
     MIN_BIRTH_DATE = datetime.date(1900, 1, 1)
 
     class Meta:
-        model = CustomUser
-        fields = ['email', 'first_name', 'last_name', 'birth_date', 'password', 'disease_type']
+        fields = ['email', 'first_name', 'last_name', 'birth_date', 'password', 'role']
 
     def validate_birth_date(self, value):
         local_tz = pytz.timezone('Europe/Rome')
@@ -21,7 +19,6 @@ class UserSerializer(serializers.ModelSerializer):
         if not (today >= value >= self.MIN_BIRTH_DATE):
             raise serializers.ValidationError("Inserire data di nascita valida")
         return value
-
 
     def validate_password(self, value):
         if len(value) < 8:
@@ -47,7 +44,6 @@ class UserSerializer(serializers.ModelSerializer):
         value = value[0].upper() + value[1:].lower()
         return value
 
-
     def validate_last_name(self, value):
         if not value.isalpha():
             raise serializers.ValidationError("Il cognome deve contenere solo lettere.")
@@ -55,6 +51,18 @@ class UserSerializer(serializers.ModelSerializer):
         value = value[0].upper() + value[1:].lower()
         return value
 
+
+
+class PatientUserSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
+        model = PatientUser
+        fields = UserSerializer.Meta.fields.append('disease_type')
+
+
+class DoctorUserSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
+        model = DoctorUser
+        fields = UserSerializer.Meta.fields
 
 
 class LoginSerializer(serializers.Serializer):
