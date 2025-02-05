@@ -40,13 +40,27 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'audio_management',
+    'authentication',
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
 }
+
+#SIMPLE_JWT = {
+#   'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+#   'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+#   'ROTATE_REFRESH_TOKENS': True,  # Fa ruotare i token refresh
+#   'BLACKLIST_AFTER_ROTATION': True,  # Rende inutilizzabili i vecchi token
+#   'ALGORITHM': 'HS256',
+#   'SIGNING_KEY': 'your-secret-key',  # Usa una chiave sicura!
+#   'AUTH_HEADER_TYPES': ('Bearer',),
+#}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -108,18 +122,30 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'authentication.BaseUser'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Rome'
+
+DATE_FORMAT = "d/m/Y"  # Formato giorno/mese/anno (es. 25/12/2023)
+DATETIME_FORMAT = "d/m/Y H:i"  # Es. 25/12/2023 14:30
+TIME_FORMAT = "H:i:s"  # Es. 14:30:15
+
+DATE_INPUT_FORMATS = [
+    '%d/%m/%Y',
+]
+
+DATETIME_INPUT_FORMATS = [
+    '%d/%m/%Y %H:%M:%S',
+]
 
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
