@@ -23,7 +23,7 @@ class BaseUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, verbose_name='email')
     first_name = models.CharField(max_length=50, verbose_name='nome')
     last_name = models.CharField(max_length=50, verbose_name='cognome')
-    birth_date = models.DateField(verbose_name='data di nascita')
+    birth_date = models.DateField(verbose_name='data di nascita', null=True)
 
     is_active = models.BooleanField(default=True, verbose_name='attivo')
     is_staff = models.BooleanField(default=False, verbose_name='staff')
@@ -45,7 +45,8 @@ class PatientUser(BaseUser):
     disease_type = models.CharField(
         max_length=20,
         verbose_name='tipo di malattia',
-        choices=DISEASE_TYPES
+        choices=DISEASE_TYPES,
+        null=True
     )
 
 # Modello per il dottore

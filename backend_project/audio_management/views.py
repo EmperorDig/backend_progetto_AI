@@ -1,18 +1,22 @@
 from rest_framework import status
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from .models import Audio, AudioData
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from .models import Audio
 from .serializers import AudioSerializer, AudioDataSerializer
 from .riconoscimento_balbuzia import process_audio_file
+from authentication.permissions import IsAuthenticatedPatientUser, IsAuthenticatedDoctorUser
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticatedDoctorUser])
 def AudioListView(request):
     queryset = Audio.objects.all()
     serializer = AudioSerializer(queryset, many=True)
     return Response(serializer.data)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticatedPatientUser])
 def AudioCreateView(request):
     serializer = AudioSerializer(data=request.data)
     if serializer.is_valid():
@@ -21,6 +25,7 @@ def AudioCreateView(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def GetAudioData(request, audio_id):
     audio = get_object_or_404(Audio, id=audio_id)
     file_path = audio.audio_file.path
