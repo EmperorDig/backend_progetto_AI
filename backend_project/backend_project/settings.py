@@ -28,6 +28,7 @@ if DJANGO_ENV == 'production':
     env_file = BASE_DIR / '.env.production'
 else:
     env_file = BASE_DIR / '.env'
+print(DJANGO_ENV)
 
 environ.Env.read_env(env_file)
 
