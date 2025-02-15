@@ -5,3 +5,5 @@ db.sqlite3
 backend_project/audio_files
 bin
 *__pycache__
+*.env
+*.env.production
