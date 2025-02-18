@@ -9,6 +9,10 @@ from .riconoscimento_balbuzia import process_audio_file
 from authentication.permissions import IsAuthenticatedPatientUser, IsAuthenticatedDoctorUser
 
 @api_view(['GET'])
+def PingView(request):
+    return Response("ciao")
+
+@api_view(['GET'])
 @permission_classes([IsAuthenticatedDoctorUser])
 def AudioListView(request):
     queryset = Audio.objects.all()
