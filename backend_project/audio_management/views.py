@@ -2,13 +2,14 @@ from rest_framework import status
 from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Audio
 from .serializers import AudioSerializer, AudioDataSerializer
 from .riconoscimento_balbuzia import process_audio_file
 from authentication.permissions import IsAuthenticatedPatientUser, IsAuthenticatedDoctorUser
 
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def PingView(request):
     return Response("ciao")
 

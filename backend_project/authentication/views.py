@@ -45,6 +45,7 @@ def LoginUser(request):
 """
 
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def ListUsers(request):
     users = PatientUser.objects.all()
     serializer = UserSerializer(users, many=True)

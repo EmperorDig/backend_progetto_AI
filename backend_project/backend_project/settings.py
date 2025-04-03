@@ -14,23 +14,29 @@ import os
 from pathlib import Path
 import environ
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env = environ.Env(
-    # Imposta il cast della variabile DEBUG in bool, con default False
-    DEBUG=(bool, False)
-)
+# Inizializza environ
+env = environ.Env()
 
+# Determina quale file .env usare
 DJANGO_ENV = os.environ.get('DJANGO_ENV', 'development')
+print(f"DJANGO_ENV: {DJANGO_ENV}")  # Debug
 
 if DJANGO_ENV == 'production':
     env_file = BASE_DIR / '.env.production'
 else:
     env_file = BASE_DIR / '.env'
-print(DJANGO_ENV)
 
+print(f"Using .env file: {env_file}")  # Debug
+
+# Legge il file .env
 environ.Env.read_env(env_file)
+
+# Debug: verifica che SECRET_KEY sia stato caricato
+print(f"SECRET_KEY from .env: {os.getenv('SECRET_KEY')}")
+
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
