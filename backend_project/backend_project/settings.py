@@ -18,6 +18,7 @@ import os
 from pathlib import Path
 import environ
 import logging
+from datetime import timedelta
 logger = logging.getLogger(__name__)
 
 
@@ -61,7 +62,7 @@ print(f"SECRET_KEY from .env: {os.getenv('SECRET_KEY')}")
 # SECURITY WARNING: keep the secret key used in production secret!
 
 
-#SECRET_KEY = 'django-insecure-$9fl^n&_16joew3672*t)jchp5j@^7+f#^_#7$gqwjh5mfv=#$'
+# SECRET_KEY = 'django-insecure-$9fl^n&_16joew3672*t)jchp5j@^7+f#^_#7$gqwjh5mfv=#$'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -103,15 +104,15 @@ REST_FRAMEWORK = {
 }
 
 
-#SIMPLE_JWT = {
-#   'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
-#   'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-#   'ROTATE_REFRESH_TOKENS': True,  # Fa ruotare i token refresh
-#   'BLACKLIST_AFTER_ROTATION': True,  # Rende inutilizzabili i vecchi token
-#   'ALGORITHM': 'HS256',
+SIMPLE_JWT = {
+   'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+   'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+   'ROTATE_REFRESH_TOKENS': True,  # Fa ruotare i token refresh
+   'BLACKLIST_AFTER_ROTATION': True,  # Rende inutilizzabili i vecchi token
+   'ALGORITHM': 'HS256',
 #   'SIGNING_KEY': 'your-secret-key',  # Usa una chiave sicura!
 #   'AUTH_HEADER_TYPES': ('Bearer',),
-#}
+}
 
 
 MIDDLEWARE = [

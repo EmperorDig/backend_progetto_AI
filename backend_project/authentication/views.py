@@ -27,22 +27,6 @@ def RegisterDoctor(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-"""
-potrebbe essere inutile
-
-@api_view(['GET'])
-@permission_classes([AllowAny])
-def LoginUser(request):
-    serializer = LoginSerializer(data=request.data)
-    if serializer.is_valid():
-        email = serializer.validated_data['email']
-        password = serializer.validated_data['password']
-        user = CustomUser.objects.get(email=email)
-        if user.check_password(password):
-            return Response({'token': user.token}, status=status.HTTP_200_OK)
-        else:
-            return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-"""
 
 @api_view(['GET'])
 @permission_classes([AllowAny])

@@ -3,6 +3,7 @@ from . import views
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
+    TokenVerifyView,
 )
 
 urlpatterns = [
@@ -15,4 +16,6 @@ urlpatterns = [
     path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # Endpoint per rinnovare il token
     path('refresh-token/', TokenRefreshView.as_view(), name='token_refresh'),
+    # Endpoint per verificare il token
+    path('verify-token/', TokenVerifyView.as_view(), name='token_verify'),
 ]
