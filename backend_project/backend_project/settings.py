@@ -91,6 +91,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'audio_management',
     'authentication',
+    'games',
 ]
 
 
