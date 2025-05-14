@@ -4,15 +4,18 @@ from .models import PatientUser, DoctorUser
 import datetime
 import pytz
 import re
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
     password = serializers.CharField(write_only=True)  # La password non deve essere letta
     birth_date = serializers.DateField(format="%d/%m/%Y", input_formats=['%d/%m/%Y'])
     MIN_BIRTH_DATE = datetime.date(1900, 1, 1)
 
     class Meta:
-        fields = ['email', 'first_name', 'last_name', 'birth_date', 'password']
-
+        model = User
+        fields = ['id', 'email', 'first_name', 'last_name', 'birth_date', 'password']
     def validate_birth_date(self, value):
         local_tz = pytz.timezone('Europe/Rome')
         today = timezone.now().astimezone(local_tz).date()
