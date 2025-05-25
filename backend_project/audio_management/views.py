@@ -25,16 +25,17 @@ def AudioListView(request):
 def AudioCreateView(request):
     serializer = AudioSerializer(data=request.data)
     if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        audio = serializer.save()
+        return Response(AnalyzeAudio(audio), status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def GetAudioData(request, audio_id):
     audio = get_object_or_404(Audio, id=audio_id)
-    file_path = audio.audio_file.path
+    return Response(AnalyzeAudio(audio))
 
+def AnalyzeAudio(audio):
     if audio.audio_data:
         data = {
             "stutter_percentage" : audio.audio_data.stutter_percentage,
@@ -45,11 +46,9 @@ def GetAudioData(request, audio_id):
         serializer = AudioDataSerializer(data=data)
         if serializer.is_valid():
             return Response(serializer.data)
-    return Response(AnalyzeAudio(file_path, audio))
 
-def AnalyzeAudio(file_path, audio):
+    file_path = audio.audio_file.path
     data = process_audio_file(file_path)
-
     serializer = AudioDataSerializer(data=data)
     if serializer.is_valid():
         audio_data = serializer.save()  # Salva il nuovo AudioData
