@@ -51,10 +51,6 @@ environ.Env.read_env(env_file)
 print(f"SECRET_KEY from .env: {os.getenv('SECRET_KEY')}")
 
 
-
-
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -67,18 +63,12 @@ print(f"SECRET_KEY from .env: {os.getenv('SECRET_KEY')}")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 
-
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 
-
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
-
-
-
+#ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 
 # Application definition
-
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -89,11 +79,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'corsheaders',
     'audio_management',
     'authentication',
     'games',
 ]
-
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -104,9 +94,8 @@ REST_FRAMEWORK = {
     ),
 }
 
-
 SIMPLE_JWT = {
-   'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+   'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
    'ROTATE_REFRESH_TOKENS': True,  # Fa ruotare i token refresh
    'BLACKLIST_AFTER_ROTATION': True,  # Rende inutilizzabili i vecchi token
@@ -117,18 +106,17 @@ SIMPLE_JWT = {
 
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
-
 ROOT_URLCONF = 'backend_project.urls'
-
 
 TEMPLATES = [
     {
@@ -146,15 +134,12 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = 'backend_project.wsgi.application'
 
-
-
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
 
 DATABASES = {
     'default': env.db('DATABASE_URL')
@@ -171,7 +156,6 @@ except KeyError:
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -187,53 +171,37 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 AUTH_USER_MODEL = 'authentication.BaseUser'
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-
 LANGUAGE_CODE = 'en-us'
 
-
 TIME_ZONE = 'Europe/Rome'
-
 
 DATE_FORMAT = "d/m/Y"  # Formato giorno/mese/anno (es. 25/12/2023)
 DATETIME_FORMAT = "d/m/Y H:i"  # Es. 25/12/2023 14:30
 TIME_FORMAT = "H:i:s"  # Es. 14:30:15
 
-
 DATE_INPUT_FORMATS = [
     '%d/%m/%Y',
 ]
-
 
 DATETIME_INPUT_FORMATS = [
     '%d/%m/%Y %H:%M:%S',
 ]
 
-
 USE_I18N = True
-
-
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-

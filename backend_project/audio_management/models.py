@@ -2,7 +2,7 @@ from django.db import models
 
 class AudioData(models.Model):
     #associeted_audio_id = models.IntegerField()
-    stutter_percentage = models.FloatField()
+    stutter_percentage = models.FloatField(default=0)
     word_matches = models.JSONField(default=list, blank=True, null=True)
     syllable_matches = models.JSONField(default=list, blank=True, null=True)
     letter_matches = models.JSONField(default=list, blank=True, null=True)
